@@ -1,6 +1,3 @@
-" Font
-set guifont=Monaco:h15.00
-
 " No audible bell
 set vb
 
@@ -11,7 +8,7 @@ set guioptions-=T
 set guioptions+=c
 
 " Local config
-if filereadable(".gvimrc.local")
-  source .gvimrc.local
+if filereadable($HOME . "/.gvimrc.local")
+  source ~/.gvimrc.local
 endif
 

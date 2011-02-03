@@ -2,8 +2,8 @@
 " This must be first, because it changes other options as a side effect.
 set nocompatible
 
-" allow backspacing over everything in insert mode
-set backspace=indent,eol,start
+" don't allow backspacing over everything in insert mode
+set backspace=
 
 set nobackup
 set nowritebackup
@@ -23,7 +23,7 @@ map Q gq
 " Also switch on highlighting the last used search pattern.
 if (&t_Co > 2 || has("gui_running")) && !exists("syntax_on")
   syntax on
-  set hlsearch
+  set nohlsearch
 endif
 
 " Only do this part when compiled with support for autocommands.
@@ -74,31 +74,14 @@ set expandtab
 " Always display the status line
 set laststatus=2
 
-" \ is the leader character
-let mapleader = "\\"
+" <Space> is the leader character
+let mapleader = " "
 
 " Edit the README_FOR_APP (makes :R commands work)
 map <Leader>R :e doc/README_FOR_APP<CR>
 
-" Leader shortcuts for Rails commands
-map <Leader>m :Rmodel 
-map <Leader>c :Rcontroller 
-map <Leader>v :Rview 
-map <Leader>u :Runittest 
-map <Leader>f :Rfunctionaltest 
-map <Leader>tm :RTmodel 
-map <Leader>tc :RTcontroller 
-map <Leader>tv :RTview 
-map <Leader>tu :RTunittest 
-map <Leader>tf :RTfunctionaltest 
-map <Leader>sm :RSmodel 
-map <Leader>sc :RScontroller 
-map <Leader>sv :RSview 
-map <Leader>su :RSunittest 
-map <Leader>sf :RSfunctionaltest 
-
 " Hide search highlighting
-map <Leader>h :set invhls <CR>
+map <Leader>l :set invhls <CR>
 
 " Opens an edit command with the path of the currently edited file filled in
 " Normal mode: <Leader>e
@@ -113,7 +96,7 @@ map <Leader>te :tabe <C-R>=expand("%:p:h") . "/" <CR>
 cmap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
 
 " Maps autocomplete to tab
-imap <Tab> <C-N>
+imap <Tab> <C-P>
 
 " Duplicate a selection
 " Visual mode: D
@@ -163,15 +146,47 @@ set numberwidth=5
 let g:snippetsEmu_key = "<S-Tab>"
 
 " Tab completion options
-" (only complete to the longest unambiguous match, and show a menu)
-set completeopt=longest,menu
 set wildmode=list:longest,list:full
-set complete=.,t
-
-" case only matters with mixed case expressions
-set ignorecase
-set smartcase
+set complete=.,w,t
 
 " Tags
 let g:Tlist_Ctags_Cmd="ctags --exclude='*.js'"
+
+" Window navigation
+nmap <C-J> <C-W><C-J>
+nmap <C-K> <C-W><C-K>
+
+" Rails configuration
+autocmd User Rails Rnavcommand step features/step_definitions -glob=**/* -suffix=_steps.rb
+autocmd User Rails Rnavcommand config config -glob=**/* -suffix=.rb -default=routes
+autocmd User Rails map <Leader>p :Rstep 
+autocmd User Rails map <Leader>sp :RSstep 
+autocmd User Rails map <Leader>tp :RTstep 
+autocmd User Rails map <Leader>m :Rmodel 
+autocmd User Rails map <Leader>c :Rcontroller 
+autocmd User Rails map <Leader>v :Rview 
+autocmd User Rails map <Leader>u :Runittest 
+autocmd User Rails map <Leader>f :Rfunctionaltest 
+autocmd User Rails map <Leader>i :Rintegrationtest 
+autocmd User Rails map <Leader>h :Rhelper 
+autocmd User Rails map <Leader>tm :RTmodel 
+autocmd User Rails map <Leader>tc :RTcontroller 
+autocmd User Rails map <Leader>tv :RTview 
+autocmd User Rails map <Leader>tu :RTunittest 
+autocmd User Rails map <Leader>tf :RTfunctionaltest 
+autocmd User Rails map <Leader>ti :RTintegrationtest 
+autocmd User Rails map <Leader>sm :RSmodel 
+autocmd User Rails map <Leader>sc :RScontroller 
+autocmd User Rails map <Leader>sv :RSview 
+autocmd User Rails map <Leader>su :RSunittest 
+autocmd User Rails map <Leader>sf :RSfunctionaltest 
+autocmd User Rails map <Leader>si :RSintegrationtest 
+autocmd User Rails map <Leader>g :Rconfig 
+autocmd User Rails map <Leader>sg :RSconfig 
+autocmd User Rails map <Leader>tg :RTconfig 
+
+nnoremap <Left> :echoe "Use h"<CR>
+nnoremap <Right> :echoe "Use l"<CR>
+nnoremap <Up> :echoe "Use k"<CR>
+nnoremap <Down> :echoe "Use j"<CR>
 

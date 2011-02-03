@@ -14,7 +14,24 @@ function! SpecDescribed()
 endfunction
 
 function! SpecSubject()
-  return "@" . rails#underscore(SpecDescribed())
+  return rails#underscore(SpecDescribed())
+endfunction
+
+function! InSpecBlock()
+  let curcol = col(".")
+  if curcol > 1
+    return 1
+  else
+    return 0
+  endif
+endfunction
+
+function! DefaultSpecDescribe()
+  if InSpecBlock()
+    return "describe"
+  else
+    return "describe Object,"
+  endif
 endfunction
 
 function! IterVar()
@@ -64,10 +81,8 @@ Snippet shreq should_require_attributes :<{}>
 Snippet shrequniq should_require_unique_attributes :<{}>
 
 " Factory girl
-Snippet F Factory(:<{factory}>)<{}>
-Snippet Fb Factory.build(:<{factory}>)<{}>
-Snippet Fw Factory(:<{factory}>, :<{}>)
-Snippet Fbw Factory.build(:<{factory}>, :<{}>)
+Snippet F Factory(:<{}>)
+Snippet Fb Factory.build(:<{}>)
 
 " shoulda association macros
 Snippet shbt should_belong_to :<{association}><CR><{}>
@@ -86,14 +101,11 @@ Snippet shres should_respond_with :<{}>
 Snippet shroute should_route :<{method}>, "<{path}>", :action => :<{}>
 Snippet shfl should_set_the_flash_to /<{}>/i
 
-" shoulda contexts
-Snippet cont context "<{description}>" do<CR>setup do<CR><{}><CR>end<CR>end
-Snippet sh should "<{description}>" do<CR><{}><CR>end
-
 "rspec
-Snippet desc describe <{class}>, "<{description}>" do<CR>before do<CR><{}><CR>end<CR>end
-Snippet descn describe <{class}> do<CR>before do<CR><{}><CR>end<CR>end
-Snippet descs describe "<{description}>" do<CR>before do<CR><{}><CR>end<CR>end
+Snippet desc ``DefaultSpecDescribe()`` "<{description}>" do<CR><{}><CR>end
+Snippet descn describe <{class}> do<CR><{}><CR>end
+Snippet bef before do<CR>{}<CR>end
+Snippet let let(:<{actor}>) { <{}> }
 Snippet it it "should <{description}>" do<CR><{}><CR>end
 Snippet itsh it "should <{description}>" do<CR>``SpecSubject()``.should <{}><CR>end
 Snippet itshbe it "should <{description}>" do<CR>``SpecSubject()``.should be_<{}><CR>end
@@ -145,3 +157,5 @@ nmap m/ /^\s*\(def \\| def self\.\)
 " <Leader>nm
 nmap <Leader>nm gg/^\s\+\(private\\|protected\)\\|^end<Enter>kO<Enter>
 
+" Align Ruby operators like hash rockets
+vmap <buffer> <C-A> !align_ruby<CR>
